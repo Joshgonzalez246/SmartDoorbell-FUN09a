@@ -5,7 +5,7 @@ import sys
 def drive_upload(filepath, file_name):
     
     try:
-        headers = {"Authorization": "Bearer ya29.a0ARrdaM9pYAPteDN4bBUAl_ehwlT8xqgqZNRYGQH-j-uVyt7MEjz2geGTlvqc2w9M1wR08YWJ5S8xvwwiZI6BjS2rYuNU1ZR53nUoDqTYVP9mCXxksqQjvWY6hnW26RqQyAszD15EVNWqNLfXdERRBabSMPmX"}
+        headers = {"Authorization": "Bearer XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"}
         para = {
             "name": file_name,
             "parents":["13u3OP3k35nU7m-bhiH4NBu5UftifxmfM"]
