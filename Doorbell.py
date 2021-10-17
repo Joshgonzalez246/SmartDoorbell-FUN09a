@@ -39,7 +39,7 @@ Doorbell_SFX = "bell.mp3"
 folder = "Images/"
 format = ".jpg"
 
-API_KEY = "o.K8zxPZ10uADIeCap9ShpPQ91JlghRIDW"
+API_KEY = "XXXXXXXXXXX"
 
 pb = Pushbullet(API_KEY)
 
