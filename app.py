@@ -1,25 +1,82 @@
-import os
-import pathlib
+import io
+import tempfile
+
 import flask
 
-app = flask.Flask(__name__)
-os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1" # for debugging
-client_app_file = os.path.join(pathlib.Path(__file__).parent, "client_app/client_secret_nat_app.json") #file containing app information
-GOOGLE_CLIENT_ID = "691499918272-79hnmhfp1vm384tiksang7dm15d5v4p8.apps.googleusercontent.com" # google client id
-app_secret = "969874774268"
+from apiclient.http import MediaIoBaseDownload, MediaIoBaseUpload
+import googleapiclient.discovery
+from google_auth import build_credentials, get_user_info
 
-if __name__ == "__main.py__":
-    app.run(debug=True)
+from werkzeug.utils import secure_filename
 
-@app.route('/')
-def index():
-    if google_auth.is_logged_in():
-        drive_fields = "files(id,name,mimeType,createdTime,modifiedTime,shared,webContentLink)"
-        items = google_drive.build_drive_api_v3().list(
-                        pageSize=20, orderBy="folder", q='trashed=false',
-                        fields=drive_fields
-                    ).execute()
+app = flask.Blueprint('google_drive', __name__)
 
-        return flask.render_template('list.html', files=items['files'], user_info=google_auth.get_user_info())
+def build_drive_api_v3():
+    credentials = build_credentials()
+    return googleapiclient.discovery.build('drive', 'v3', credentials=credentials).files()
 
-    return 'You are not currently logged in.'
+def save_image(file_name, mime_type, file_data):
+    drive_api = build_drive_api_v3()
+
+    generate_ids_result = drive_api.generateIds(count=1).execute()
+    file_id = generate_ids_result['ids'][0]
+
+    body = {
+        'id': file_id,
+        'name': file_name,
+        'mimeType': mime_type,
+    }
+
+    media_body = MediaIoBaseUpload(file_data,
+                                   mimetype=mime_type,
+                                   resumable=True)
+
+    drive_api.create(body=body,
+                     media_body=media_body,
+                     fields='id,name,mimeType,createdTime,modifiedTime').execute()
+
+    return file_id
+
+
+@app.route('/gdrive/upload', methods=['GET', 'POST'])
+def upload_file():
+    if 'file' not in flask.request.files:
+        return flask.redirect('/')
+
+    file = flask.request.files['file']
+    if (not file):
+        return flask.redirect('/')
+
+    filename = secure_filename(file.filename)
+
+    fp = tempfile.TemporaryFile()
+    ch = file.read()
+    fp.write(ch)
+    fp.seek(0)
+
+    mime_type = flask.request.headers['Content-Type']
+    save_image(filename, mime_type, fp)
+
+    return flask.redirect('/')
+
+@app.route('/gdrive/view/<file_id>', methods=['GET'])
+def view_file(file_id):
+    drive_api = build_drive_api_v3()
+
+    metadata = drive_api.get(fields="name,mimeType", fileId=file_id).execute()
+
+    request = drive_api.get_media(fileId=file_id)
+    fh = io.BytesIO()
+    downloader = MediaIoBaseDownload(fh, request)
+
+    done = False
+    while done is False:
+        status, done = downloader.next_chunk()
+
+    fh.seek(0)
+
+    return flask.send_file(
+                     fh,
+                     attachment_filename=metadata['name'],
+                     mimetype=metadata['mimeType']
+               )
