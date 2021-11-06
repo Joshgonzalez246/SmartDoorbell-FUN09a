@@ -28,7 +28,7 @@ button_led = LED(27)
 IF_circuit = LED(20)
 pir = MotionSensor(21)
 camera.resolution = (1280, 720)
-camera.framerate = 15
+camera.framerate = 24
 
 ############################################################
 # Parameters #
@@ -39,11 +39,11 @@ Doorbell_SFX = "bell.mp3"
 folder = "Images/"
 format = ".jpg"
 
-API_KEY = "XXXXXXXXXXX"
+API_KEY = "o.RS15opDtGy7kphnjqAGGjLH5eY7PG3lx"
 
 pb = Pushbullet(API_KEY)
 
-website_URL = "https://www.google.com/"
+website_URL = "https://www.SmartDoorbellWebApp.com/"
 
 ############################################################
 # Global Parameters #
@@ -80,9 +80,9 @@ def ring_notification():
 def motion_notification():
     push = pb.push_note("Motion Detected", "Someone is at your door")
     
-def sms_notification():
-    device = pb.devices[0]
-    push = pb.push_sms(device, "+61449556793", "Yo check yo door")
+#def sms_notification():
+#    device = pb.devices[0]
+#     push = pb.push_sms(device, "+61449556793", "Yo check yo door")
     
 
 # Checks if its day or night to enable IF LEDs for video/image capturing #
@@ -124,7 +124,7 @@ def stream():
 
     print('Stream is starting...')
     ring_notification()
-    sms_notification()
+    #sms_notification()
     
     time.sleep(10)
     print('Stream connection shutting down...')
@@ -171,7 +171,7 @@ def doorbell():
         # Notifcation with image attachment for SMTP and pushbullet API
         p = subprocess.Popen([sys.executable, 'user_email.py', file_path], stdout=subprocess.PIPE)
         p = subprocess.Popen([sys.executable, 'Pushbullet_image.py', file_path], stdout=subprocess.PIPE)
-        # p = subprocess.Popen([sys.executable, 'FileUpload.py', file_path, file_time], stdout=subprocess.PIPE)
+        p = subprocess.Popen([sys.executable, 'FileUpload.py', file_path, file_time], stdout=subprocess.PIPE)
         
         # Record 5 Second clip
         camera.start_preview()
@@ -190,7 +190,7 @@ def doorbell():
                 camera.stop_preview()
                 
                 file_path = 'Videos/' + file_time + '.h264'
-                # p = subprocess.Popen([sys.executable, 'FileUpload.py', file_path, file_time], stdout=subprocess.PIPE)
+                p = subprocess.Popen([sys.executable, 'FileUpload.py', file_path, file_time], stdout=subprocess.PIPE)
                 
                 stream()
                 

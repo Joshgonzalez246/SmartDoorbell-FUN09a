@@ -1,7 +1,7 @@
 import sys
 from pushbullet import Pushbullet
 
-API_KEY = "XXXXXXXXXXXXXXXXXXXX"
+API_KEY = "o.RS15opDtGy7kphnjqAGGjLH5eY7PG3lx"
 
 pb = Pushbullet(API_KEY)
 

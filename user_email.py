@@ -14,15 +14,15 @@ from email import encoders
 # Parameters #
 ############################################################
 
-sender_email = 'smtppython246@gmail.com'
+sender_email = 'fun09a@gmail.com'
 sender_name = 'DOORBELL_SYSTEM'
 
-receiver_email = 'smtppython246@gmail.com'
+receiver_email = 'fun09a@gmail.com'
 receiver_name = 'HOME_USER'
 
 # receiver_emails = ['smtppython246@gmail.com', 'smtppython246@gmail.com', 'smtppython246@gmail.com']
 # receiver_names = ['1', '2', '3']
-password = 'asdfasewfeaf'
+password = 'SEDEsupercool123!'
 
 # Email Body
 email_body = '''
