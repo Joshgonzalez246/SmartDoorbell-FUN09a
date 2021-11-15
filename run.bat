@@ -7,4 +7,4 @@ set FLASK_APP=app.py
 set FLASK_DEBUG=1
 set FN_FLASK_SECRET_KEY=3546578676746353552525364657586887979702827374
 
-python -m flask run -p 8040
+python -m flask run
