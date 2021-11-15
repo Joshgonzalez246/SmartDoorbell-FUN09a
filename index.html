@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Smart Doorbell - Home Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/main.css"/>
+    <script src="static/js/main.js"></script>
+</head>
+
+<body>
+<div class="div-sticky container-heading">
+    <table>
+        <tr>
+            <td id="heading">
+                <h1>
+                    <h1>Smart Doorbell</h1>
+                </h1>
+            </td>
+            <td>
+                   <div class="li login-margin" >
+                        <a href="/login">Sign in</a><br />
+                   </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+    <div class="div-container div-text div-align">
+        <h6>Home surveillance system</h6>
+
+    </div>
+
+    <div class="text-position">
+        <div class="div-align">
+             <h4>Make your home safer through</h4>
+             <h4>affordable and efficient</h4>
+             <h4>means.</h4>
+             </div>
+    </div>
+
+<div>
+    <table>
+        <tr>
+            <td>
+                <img src="static/images/MicrosoftTeams-image.png"
+                width="950"
+                height="1100"  />
+            </td>
+            <td>
+                <h6 class="image-text">The Smart Doorbell delivers peace of mind with clear images and videos.</h6>
+                <h6 class="image-text">Monitor everything that happens at your front door from anywhere using your emails, Push Bullet and within this application!</h6>
+                <h6 class="image-text">Do all this while keeping your home safe and the environment safe.</h6>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="div-align div-padding">
+    <a href="https://meet.google.com/?pli=1">Go to Google Meet.</a>
+</div>
+
+<div>
+  <div>
+     <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Google Drive File Browser</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+          <a class="navbar-brand" href="#">Google Drive File Browser</a>
+          <ul class="navbar-nav mr-auto"></ul>
+          <a href="/logout" class="btn btn-primary" role="button" aria-pressed="true">Logout</a>
+      </div>
+    </nav>
+    <div class="container">
+        <h3 class="mt-4">Upload a new file</h3>
+<form method='POST' enctype='multipart/form-data' action="/gdrive/upload">
+  <div class="input-group mb-3">
+    <div class="custom-file">
+      <input type="file" name="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+      <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+    </div>
+    <div class="input-group-append">
+      <input class="input-group-text" type="submit" value="Upload" />
+    </div>
+  </div>
+</form>
+<h3 class="mt-4">Recent Files</h3>
+<table class="table">
+<thead>
+  <tr>
+    <th scope="col">Name</th>
+      <th scope="col">MimeType</th>
+    <th scope="col">Created Time</th>
+  </tr>
+</thead>
+<tbody>
+  {% for file in files %}
+  <tr>
+      <td><a href={{file['webViewLink']}} target="_blank">{{ file['name']}}</a></td>
+      <td>{{ file['mimeType'] }}</td>
+      <td>{{ file['createdTime'] }}</td>
+
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script>
+        $('.custom-file-input').on('change', function() {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+    </script>
+  </body>
+</div>
+
+
+</body>
+</html>
